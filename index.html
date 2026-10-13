@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>תרגול מתמטיקה – כיתה ז</title>
+<style>
+:root{--bg:#f5f6fa;--card:#fff;--tx:#1f2430;--mut:#6b7280;--ac:#3b6cf6;--acl:#e6edff;--ok:#16a34a;--okl:#dcfce7;--bad:#dc2626;--badl:#fee2e2;--bd:#d9dde6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161c;--card:#1e222b;--tx:#eceef3;--mut:#9aa3b2;--ac:#7c9cff;--acl:#26324f;--ok:#4ade80;--okl:#17331f;--bad:#f87171;--badl:#3b1d1d;--bd:#363c4a}}
+:root[data-theme="dark"]{--bg:#14161c;--card:#1e222b;--tx:#eceef3;--mut:#9aa3b2;--ac:#7c9cff;--acl:#26324f;--ok:#4ade80;--okl:#17331f;--bad:#f87171;--badl:#3b1d1d;--bd:#363c4a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.5}
+.w{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{flex:1;min-width:70px;padding:9px 6px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font-size:15px;cursor:pointer}
+.tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px}
+.meta{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-bottom:8px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--ac);width:0}
+#qt{font-size:19px;margin:0 0 10px}
+.svg{display:block;margin:6px auto;max-width:100%;height:auto;direction:ltr}
+.sv svg{width:264px}
+.gl{stroke:var(--bd);stroke-width:1}.ax{stroke:var(--tx);stroke-width:1.6}
+.svg text{fill:var(--tx)}.pt{fill:var(--ac)}.cp{fill:var(--bad)}
+.sh{fill:var(--acl);stroke:var(--ac);stroke-width:2}.ln{stroke:var(--ac);stroke-width:2.5}.ar{fill:none;stroke:var(--bad);stroke-width:2}
+.ans{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:10px 0}
+input{width:90px;font-size:20px;padding:8px;text-align:center;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx)}
+input:focus{outline:none;border-color:var(--ac)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.opt{padding:12px;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:17px;cursor:pointer}
+.opt:disabled{cursor:default}.opt.good{border-color:var(--ok);background:var(--okl)}.opt.wrong{border-color:var(--bad);background:var(--badl)}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.btn{padding:10px 18px;border-radius:10px;border:none;font-size:16px;cursor:pointer;background:var(--ac);color:#fff}
+.btn.sec{background:var(--acl);color:var(--ac)}
+.fb{margin-top:12px;padding:12px;border-radius:10px}
+.fb.ok{background:var(--okl)}.fb.no{background:var(--badl)}.fb.hint{background:var(--acl)}
+details{font-size:14.5px;color:var(--mut)}summary{cursor:pointer;color:var(--ac);font-size:15px}
+.big{font-size:42px;text-align:center;margin:6px 0}
+[hidden]{display:none!important}
+.ex{padding:14px}.qh{display:flex;gap:10px;align-items:flex-start}.nb{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}.qt{font-size:18px}.sm{padding:6px 12px;font-size:14px}h2{font-size:19px;margin:22px 0 10px}.opt.sel{border-color:var(--ac);background:var(--acl)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.2;font-size:.95em}.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px}.fr>span:last-child{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>📐 תרגול מתמטיקה – כיתה ז</h1>
+<div class="tabs" id="tabs"></div>
+<div class="card"><details id="tip"><summary>תזכורת: מה חשוב לזכור?</summary><div id="tipb"></div></details></div>
+<div id="main"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const r=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[r(0,a.length-1)];
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+const nz=(a,b)=>{let v;do v=r(a,b);while(!v);return v};
+const L=s=>`<span dir="ltr">${s}</span>`;
+const P=(x,y)=>L(`(${x}, ${y})`);
+const RAD=Math.PI/180;
+
+function grid(pts,cp,ex){
+ let s='<svg viewBox="0 0 264 264" class="svg" id="g">';
+ for(let i=-5;i<=5;i++){const p=132+i*24;
+  s+=`<line class="gl" x1="${p}" y1="12" x2="${p}" y2="252"/><line class="gl" x1="12" y1="${p}" x2="252" y2="${p}"/>`;
+  if(i)s+=`<text x="${p}" y="145" font-size="9" text-anchor="middle">${i}</text><text x="127" y="${135-i*24}" font-size="9" text-anchor="end">${i}</text>`;}
+ s+=`<line class="ax" x1="8" y1="132" x2="256" y2="132"/><line class="ax" x1="132" y1="8" x2="132" y2="256"/><text x="256" y="124" font-size="13" text-anchor="end">x</text><text x="140" y="16" font-size="13">y</text>`;
+ s+=ex||"";
+ (pts||[]).forEach(p=>{const X=132+p[0]*24,Y=132-p[1]*24;s+=`<circle class="pt" cx="${X}" cy="${Y}" r="5"/>`+(p[2]?`<text x="${X+7}" y="${Y-7}" font-size="13" font-weight="700">${p[2]}</text>`:'')});
+ if(cp)s+=`<circle class="cp" cx="${132+cp[0]*24}" cy="${132-cp[1]*24}" r="6"/>`;
+ return s+'</svg>';
+}
+const asvg=i=>`<svg viewBox="0 0 260 180" class="svg" width="280">${i}</svg>`;
+
+
+const COORD=[
+()=>{const x=r(-5,5),y=r(-5,5);return{type:'xy',t:'מהם שיעורי הנקודה A?',pts:[[x,y,'A']],ans:[x,y],hint:'קודם קוראים את x (ימינה/שמאלה), אחר כך את y (למעלה/למטה).',why:`הנקודה A היא ${P(x,y)}.`}},
+()=>{const x=r(-5,5),y=r(-5,5);return{type:'click',t:`לחצו על הרשת כדי לסמן את הנקודה ${P(x,y)}`,pts:[],ans:[x,y],hint:`מתחילים בראשית, זזים ${Math.abs(x)} ${x>=0?'ימינה':'שמאלה'} ואז ${Math.abs(y)} ${y>=0?'למעלה':'למטה'}.`,why:`הנקודה ${P(x,y)} נמצאת ${Math.abs(x)} ${x>=0?'ימינה':'שמאלה'} ו-${Math.abs(y)} ${y>=0?'למעלה':'למטה'} מהראשית.`}},
+()=>{const x=nz(-5,5),y=nz(-5,5);const q=x>0&&y>0?'רביע I':x<0&&y>0?'רביע II':x<0&&y<0?'רביע III':'רביע IV';return{type:'choice',t:`באיזה רביע נמצאת הנקודה ${P(x,y)}?`,pts:[[x,y,'A']],opts:['רביע I','רביע II','רביע III','רביע IV'],ans:q,hint:'רביע I: (+,+) · II: (−,+) · III: (−,−) · IV: (+,−)',why:`x ${x>0?'חיובי':'שלילי'} ו-y ${y>0?'חיובי':'שלילי'} ← ${q}.`}},
+()=>{const onX=r(0,1),v=nz(-5,5);const pt=onX?[v,0]:[0,v];return{type:'choice',t:`על איזה ציר נמצאת הנקודה ${P(pt[0],pt[1])}?`,pts:[[pt[0],pt[1],'A']],opts:['ציר x','ציר y'],ans:onX?'ציר x':'ציר y',hint:'בנקודה שעל ציר x שיעור ה-y שווה 0, ובנקודה שעל ציר y שיעור ה-x שווה 0.',why:onX?'y = 0 ← הנקודה על ציר x.':'x = 0 ← הנקודה על ציר y.'}},
+()=>{const sx=r(-3,3),sy=r(-3,3),dx=nz(-3,3),dy=nz(-3,3);return{type:'xy',t:`מתחילים בנקודה A ${P(sx,sy)} ומזיזים ${Math.abs(dx)} צעדים ${dx>0?'ימינה':'שמאלה'} ו-${Math.abs(dy)} צעדים ${dy>0?'למעלה':'למטה'}. באיזו נקודה נגיע?`,pts:[[sx,sy,'A']],ans:[sx+dx,sy+dy],hint:'ימינה/שמאלה משנה את x. למעלה/למטה משנה את y.',why:`${P(sx,sy)} ← ${P(sx+dx,sy+dy)}`}}
+];
+
+COORD.push(
+()=>{const y=nz(-5,5);return{type:'xy',t:'מהם שיעורי הנקודה A?',pts:[[0,y,'A']],ans:[0,y],hint:'הנקודה נמצאת על ציר y, ולכן שיעור ה-x שלה הוא 0. את שיעור ה-y קוראים מהמספר שליד הנקודה.',why:`הנקודה A היא ${P(0,y)} – נקודה על ציר y.`}},
+()=>{const y=nz(-5,5);return{type:'click',t:`לחצו על הרשת כדי לסמן את הנקודה ${P(0,y)} (היא נמצאת על ציר y)`,pts:[],ans:[0,y],hint:`נקודה על ציר y נמצאת מעל או מתחת לראשית: זזים ${Math.abs(y)} צעדים ${y>0?'למעלה':'למטה'}, בלי לזוז ימינה או שמאלה.`,why:`${P(0,y)} נמצאת על ציר y, ${Math.abs(y)} צעדים ${y>0?'מעל':'מתחת'} הראשית.`}},
+()=>{const y=nz(-9,9);return{type:'xy',t:`נקודה נמצאת על ציר y, ושיעור ה-y שלה הוא ${L(f(y))}. מהם שיעורי הנקודה?`,ans:[0,y],hint:'כל נקודה שעל ציר y נמצאת בדיוק מעל או מתחת לראשית, ולכן שיעור ה-x שלה הוא 0.',why:`שיעורי הנקודה: ${P(0,f(y))}.`}}
+);
+
+const ANG=[
+()=>{const x=r(10,80);return{type:'num',unit:'°',t:`שתי זוויות משלימות ל-90°. אחת מהן היא ${x}°. מה גודל הזווית השנייה?`,ans:90-x,hint:'סכום שתי זוויות משלימות ל-90° הוא 90°.',why:L(`90 − ${x} = ${90-x}`)+'°'}},
+()=>{let x;do x=r(20,160);while(x===90);return{type:'num',unit:'°',t:`שתי זוויות צמודות (משלימות ל-180°). אחת מהן היא ${x}°. מה גודל השנייה?`,ans:180-x,hint:'זוויות צמודות מרכיבות קו ישר: סכומן 180°.',why:L(`180 − ${x} = ${180-x}`)+'°'}},
+()=>{const a=r(25,80),b=r(25,80);return{type:'num',unit:'°',t:'מצאו את הזווית החסרה במשולש (הציור אינו בקנה מידה).',svg:asvg(`<polygon class="sh" points="30,150 230,150 120,25"/><text x="46" y="142" font-size="15">${a}°</text><text x="214" y="142" font-size="15" text-anchor="end">${b}°</text><text x="120" y="68" font-size="18" text-anchor="middle" font-weight="700">?</text>`),ans:180-a-b,hint:'סכום הזוויות במשולש הוא 180°.',why:L(`180 − ${a} − ${b} = ${180-a-b}`)+'°'}},
+()=>{let a;do a=r(30,150);while(a===90);const th=a*RAD,c=[130,90],k=r(0,1);
+ const pos=m=>[130+42*Math.cos(m*RAD),94-42*Math.sin(m*RAD)];
+ const m1=pos(a/2),m2=pos((a+180)/2),m3=pos(a/2+180);
+ const lab=(p,t,q)=>`<text x="${p[0]}" y="${p[1]}" font-size="${q?19:15}" text-anchor="middle" ${q?'font-weight="700"':''}>${t}</text>`;
+ const svg=asvg(`<line class="ln" x1="20" y1="90" x2="240" y2="90"/><line class="ln" x1="${130-85*Math.cos(th)}" y1="${90+85*Math.sin(th)}" x2="${130+85*Math.cos(th)}" y2="${90-85*Math.sin(th)}"/>`+lab(m1,a+'°')+(k?lab(m2,'?',1):lab(m3,'?',1)));
+ return{type:'num',unit:'°',t:'שני ישרים נחתכים. מה גודל הזווית המסומנת ב-?',svg,ans:k?180-a:a,hint:k?'הזוויות הצמודות מרכיבות קו ישר: סכומן 180°.':'זוויות קודקודיות (מנוגדות בחיתוך שני ישרים) שוות זו לזו.',why:k?L(`180 − ${a} = ${180-a}`)+'° (זוויות צמודות)':`זוויות קודקודיות שוות, ולכן ${a}°.`}},
+()=>{const a=r(50,110),b=r(50,110),c=r(40,100);return{type:'num',unit:'°',t:`ארבע זוויות מקיפות נקודה אחת. שלוש מהן: ${a}°, ${b}°, ${c}°. מה גודל הרביעית?`,ans:360-a-b-c,hint:'סכום הזוויות סביב נקודה הוא 360°.',why:L(`360 − ${a} − ${b} − ${c} = ${360-a-b-c}`)+'°'}},
+()=>{const x=pick([r(10,80),90,r(95,170),180]);const k=x<90?'חדה':x===90?'ישרה':x<180?'קהה':'שטוחה';const cx=Math.cos(x*RAD),sy=Math.sin(x*RAD);
+ const svg=asvg(`<line class="ln" x1="130" y1="150" x2="230" y2="150"/><line class="ln" x1="130" y1="150" x2="${130+100*cx}" y2="${150-100*sy}"/><path class="ar" d="M 160 150 A 30 30 0 0 0 ${130+30*cx} ${150-30*sy}"/>`);
+ return{type:'choice',t:'איזו זווית מופיעה בציור?',svg,opts:['חדה','ישרה','קהה','שטוחה'],ans:k,hint:'חדה: קטנה מ-90° · ישרה: 90° · קהה: בין 90° ל-180° · שטוחה: 180°',why:`זווית ${k}.`}}
+];
+const pt=(o,d,l)=>[o[0]+l*Math.cos(d*RAD),o[1]-l*Math.sin(d*RAD)];
+const arcp=(o,rd,a1,a2)=>{const p=pt(o,a1,rd),q=pt(o,a2,rd);return `<path class="ar" d="M ${p[0]} ${p[1]} A ${rd} ${rd} 0 ${a2-a1>180?1:0} 0 ${q[0]} ${q[1]}"/>`};
+const ray=(o,d,l)=>{const p=pt(o,d,l);return `<line class="ln" x1="${o[0]}" y1="${o[1]}" x2="${p[0]}" y2="${p[1]}"/>`};
+const tx=(o,d,rd,t,q)=>{const p=pt(o,d,rd);return `<text x="${p[0]}" y="${p[1]+5}" font-size="${q?20:15}" text-anchor="middle"${q?' font-weight="700"':''}>${t}</text>`};
+const cross=(th,lb)=>{const O=[130,90],p=pt(O,th,85),q=pt(O,th+180,85);let s=`<line class="ln" x1="20" y1="90" x2="240" y2="90"/><line class="ln" x1="${q[0]}" y1="${q[1]}" x2="${p[0]}" y2="${p[1]}"/>`;[th/2,(th+180)/2,th/2+180,(th+180)/2+180].forEach((m,i)=>{s+=tx(O,m,40,lb[i],lb[i]==='?')});return asvg(s)};
+const lets=(O,a,t)=>tx(O,0,153,'A')+tx(O,a,139,'B')+tx(O,t,129,'C')+'<text x="82" y="172" font-size="15">O</text>';
+const NOTE='(הציור אינו בקנה מידה)';
+ANG[0]=()=>{const x=r(15,75),O=[50,160];return{type:'num',unit:'°',t:`מצאו את גודל הזווית המסומנת ב-? ${NOTE}`,svg:asvg(ray(O,0,170)+ray(O,90,130)+ray(O,x,140)+'<path class="ar" d="M 70 160 L 70 140 L 50 140"/>'+tx(O,x/2,62,x+'°')+tx(O,(x+90)/2,62,'?',1)),ans:90-x,hint:'הריבוע מסמן זווית ישרה (90°). שתי הזוויות שבתוכה משלימות ל-90°.',why:L(`90 − ${x} = ${90-x}`)+'°'}};
+ANG[1]=()=>{let x;do x=r(30,150);while(x===90);const O=[130,150];return{type:'num',unit:'°',t:`מצאו את גודל הזווית המסומנת ב-? ${NOTE}`,svg:asvg(ray(O,0,110)+ray(O,180,110)+ray(O,x,120)+tx(O,x/2,50,x+'°')+tx(O,(x+180)/2,50,'?',1)),ans:180-x,hint:'שתי הזוויות מרכיבות קו ישר (זוויות צמודות), ולכן סכומן 180°.',why:L(`180 − ${x} = ${180-x}`)+'°'}};
+ANG[4]=()=>{const a=r(50,110),b=r(50,110),c=r(40,100),d=360-a-b-c,O=[130,90];return{type:'num',unit:'°',t:`מצאו את גודל הזווית המסומנת ב-? ${NOTE}`,svg:asvg(ray(O,0,80)+ray(O,a,80)+ray(O,a+b,80)+ray(O,a+b+c,80)+tx(O,a/2,38,a+'°')+tx(O,a+b/2,38,b+'°')+tx(O,a+b+c/2,38,c+'°')+tx(O,a+b+c+d/2,38,'?',1)),ans:d,hint:'סכום הזוויות סביב נקודה הוא 360°.',why:L(`360 − ${a} − ${b} − ${c} = ${d}`)+'°'}};
+ANG.push(
+()=>{const th=r(40,65),p=pick([[1,3,'קודקודיות'],[2,4,'קודקודיות'],[1,2,'צמודות'],[2,3,'צמודות'],[3,4,'צמודות'],[4,1,'צמודות']]);return{type:'choice',t:`בציור שני ישרים נחתכים. הזוויות ${L(p[0])} ו-${L(p[1])} הן זוויות:`,svg:cross(th,['1','2','3','4']),opts:['קודקודיות','צמודות'],ans:p[2],hint:'קודקודיות: מנוגדות זו לזו. צמודות: חולקות צלע משותפת ומרכיבות קו ישר.',why:p[2]==='קודקודיות'?`הזוויות ${p[0]} ו-${p[1]} מנוגדות, ולכן הן קודקודיות (והן שוות זו לזו).`:`הזוויות ${p[0]} ו-${p[1]} חולקות צלע ומרכיבות קו ישר, ולכן הן צמודות (סכומן 180°).`}},
+()=>{const th=r(40,65),k=r(1,4),v=(k+1)%4+1;return{type:'choice',t:`בציור שני ישרים נחתכים. איזו זווית היא קודקודית לזווית ${L(k)}?`,svg:cross(th,['1','2','3','4']),opts:[1,2,3,4].filter(n=>n!==k).map(n=>`זווית ${n}`),ans:`זווית ${v}`,hint:'זווית קודקודית נמצאת מול הזווית, בצד השני של נקודת החיתוך.',why:`זווית ${v} נמצאת מול זווית ${k}, ולכן הן קודקודיות.`}},
+()=>{const sub=r(0,1),a=r(30,55),b=r(30,60),t=a+b,O=[90,150];const base=ray(O,0,140)+ray(O,a,125)+ray(O,t,115)+lets(O,a,t)+arcp(O,45,0,a)+arcp(O,45,a,t)+arcp(O,95,0,t);
+ return{type:'num',unit:'°',t:`מצאו את גודל הזווית ${L(sub?'∠BOC':'∠AOC')}. ${NOTE}`,svg:asvg(base+tx(O,a/2,68,a+'°')+(sub?tx(O,(a+t)/2,68,'?',1)+tx(O,t/2,112,t+'°'):tx(O,(a+t)/2,68,b+'°')+tx(O,t/2,112,'?',1))),ans:sub?b:t,hint:sub?'∠AOC = ∠AOB + ∠BOC, ולכן ∠BOC = ∠AOC − ∠AOB.':'∠AOC מורכבת משתי הזוויות: ∠AOB ועוד ∠BOC.',why:sub?L(`${t} − ${a} = ${b}`)+'°':L(`${a} + ${b} = ${t}`)+'°'}},
+()=>{const P={A:[40,150],B:[220,150],C:[110,35]},nm=['A','B','C'],V=pick(nm),[X,Y]=shuf(nm.filter(n=>n!==V)),o=P[V];const an=(p,q)=>Math.atan2(-(q[1]-p[1]),q[0]-p[0])/RAD;let d1=an(o,P[X]),d2=an(o,P[Y]),lo=Math.min(d1,d2),hi=Math.max(d1,d2);if(hi-lo>180){const t=lo;lo=hi;hi=t+360}
+ return{type:'choice',t:'איך קוראים לזווית המסומנת בקשת האדומה?',svg:asvg('<polygon class="sh" points="40,150 220,150 110,35"/>'+arcp(o,28,lo,hi)+'<text x="24" y="168" font-size="17" font-weight="700">A</text><text x="222" y="168" font-size="17" font-weight="700">B</text><text x="104" y="26" font-size="17" font-weight="700">C</text>'),opts:[`∠${X}${V}${Y}`,`∠${V}${X}${Y}`,`∠${V}${Y}${X}`].map(L),ans:L(`∠${X}${V}${Y}`),hint:'בשם זווית בשלוש אותיות, האות שבאמצע היא קודקוד הזווית.',why:`הקודקוד הוא ${V}, ולכן ${V} באמצע: ${L(`∠${X}${V}${Y}`)} (או ${L(`∠${Y}${V}${X}`)}).`}},
+()=>{const a=r(30,55),b=r(30,60),t=a+b,O=[90,150],m=pick([[0,a,'AOB'],[a,t,'BOC'],[0,t,'AOC']]);return{type:'choice',t:'איך קוראים לזווית המסומנת בקשת האדומה?',svg:asvg(ray(O,0,140)+ray(O,a,125)+ray(O,t,115)+lets(O,a,t)+arcp(O,m[2]==='AOC'?75:55,m[0],m[1])),opts:['∠AOB','∠BOC','∠AOC'].map(L),ans:L('∠'+m[2]),hint:'האות שבאמצע (O) היא הקודקוד; שתי האחרות נמצאות על שתי הצלעות של הזווית.',why:`הזווית נמצאת בין הצלעות OA${m[2][2]==='B'&&m[2][0]==='A'?'':''} ${L('∠'+m[2])}.`.replace(/הזווית נמצאת.*/,`הזווית המסומנת היא ${L('∠'+m[2])}.`)}}
+);
+const f=n=>n<0?'−'+(-n):''+n;
+const SO=[
+()=>{const a=r(2,9),b=r(2,9),c=r(2,9);return{type:'num',t:`חשבו: ${L(`${a} + ${b} · ${c}`)}`,ans:a+b*c,hint:'כפל וחילוק לפני חיבור וחיסור.',why:L(`${a} + ${b*c} = ${a+b*c}`)}},
+()=>{const a=r(2,9),b=r(2,9),c=r(2,9);return{type:'num',t:`חשבו: ${L(`(${a} + ${b}) · ${c}`)}`,ans:(a+b)*c,hint:'קודם מחשבים את מה שבסוגריים.',why:L(`${a+b} · ${c} = ${(a+b)*c}`)}},
+()=>{const a=r(26,40),b=r(2,5),c=r(2,5);return{type:'num',t:`חשבו: ${L(`${a} − ${b} · ${c}`)}`,ans:a-b*c,hint:'קודם הכפל, ואז החיסור.',why:L(`${a} − ${b*c} = ${a-b*c}`)}},
+()=>{const b=r(2,6),k=r(2,9),c=r(2,6),d=r(2,6),a=b*k;return{type:'num',t:`חשבו: ${L(`${a} ÷ ${b} + ${c} · ${d}`)}`,ans:k+c*d,hint:'קודם חילוק וכפל (משמאל לימין), ואז חיבור.',why:L(`${k} + ${c*d} = ${k+c*d}`)}},
+()=>{const a=r(2,6),c=r(1,5),b=c+r(1,6),d=r(1,9);return{type:'num',t:`חשבו: ${L(`${a} · (${b} − ${c}) + ${d}`)}`,ans:a*(b-c)+d,hint:'סוגריים, אחר כך כפל, ובסוף חיבור.',why:L(`${a} · ${b-c} + ${d} = ${a*(b-c)+d}`)}},
+()=>{const c=r(2,6),s=c*r(2,6),a=r(1,s-1),b=s-a,e=r(1,9);return{type:'num',t:`חשבו: ${L(`(${a} + ${b}) ÷ ${c} + ${e}`)}`,ans:s/c+e,hint:'סוגריים ← חילוק ← חיבור.',why:L(`${s} ÷ ${c} + ${e} = ${s/c+e}`)}}
+];
+const OO=[80,150],OA=[90,150],LS=[['A','O','B'],['K','L','M'],['P','Q','R'],['D','E','F'],['X','Y','Z']],TY=['חדה','ישרה','קהה','שטוחה'];
+const fig=(l,d,mk)=>asvg(ray(OO,0,130)+ray(OO,d,120)+(mk?arcp(OO,28,0,d):'')+tx(OO,0,142,l[0])+tx(OO,d,132,l[2])+`<text x="76" y="172" font-size="15">${l[1]}</text>`);
+const triFig=V=>{const PT={A:[40,150],B:[220,150],C:[110,35]},[X,Y]=['A','B','C'].filter(n=>n!==V),o=PT[V],an=(p,q)=>Math.atan2(-(q[1]-p[1]),q[0]-p[0])/RAD;let d1=an(o,PT[X]),d2=an(o,PT[Y]),lo=Math.min(d1,d2),hi=Math.max(d1,d2);if(hi-lo>180){const t=lo;lo=hi;hi=t+360}
+ return asvg('<polygon class="sh" points="40,150 220,150 110,35"/>'+arcp(o,28,lo,hi)+'<text x="24" y="168" font-size="17" font-weight="700">A</text><text x="222" y="168" font-size="17" font-weight="700">B</text><text x="104" y="26" font-size="17" font-weight="700">C</text>')};
+const addFig=(a,t,la,lb,lt)=>asvg(ray(OA,0,140)+ray(OA,a,125)+ray(OA,t,115)+lets(OA,a,t)+arcp(OA,45,0,a)+arcp(OA,45,a,t)+arcp(OA,95,0,t)+tx(OA,a/2,68,la,la==='?')+tx(OA,(a+t)/2,68,lb,lb==='?')+tx(OA,t/2,112,lt,lt==='?'));
+const nm3=l=>L('∠'+l.join(''));
+const A20=[
+()=>{const l=pick(LS);return{type:'choice',t:`בזווית ${nm3(l)} – איזו נקודה היא קודקוד הזווית?`,svg:fig(l,r(35,110),1),opts:shuf([...l]),ans:l[1],hint:'האות שבאמצע בשם הזווית היא הקודקוד.',why:`הקודקוד הוא ${l[1]} – האות האמצעית.`}},
+()=>{const l=pick(LS),[a,o,b]=l;return{type:'choice',t:`מהן צלעות (שוקי) הזווית ${nm3(l)}?`,svg:fig(l,r(35,110),1),opts:shuf([`${L(o+a)} ו-${L(o+b)}`,`${L(a+b)} ו-${L(o+b)}`,`${L(a+b)} ו-${L(o+a)}`]),ans:`${L(o+a)} ו-${L(o+b)}`,hint:'צלעות הזווית יוצאות מהקודקוד.',why:`הצלעות הן הקרניים היוצאות מהקודקוד ${o}: ${L(o+a)} ו-${L(o+b)}.`}},
+()=>{const n=r(0,1)?3:4,ds=[0,40,80,120].slice(0,n);let s='<text x="82" y="172" font-size="15">O</text>';ds.forEach((d,i)=>{s+=ray(OA,d,130-i*5)+tx(OA,d,145-i*5,'ABCD'[i])});return{type:'num',t:'כמה זוויות יש בציור? (כל שתי קרניים יוצרות זווית)',svg:asvg(s),ans:n*(n-1)/2,hint:'רשמו את כל הזוויות: ∠AOB, ∠BOC, ... ואל תשכחו את הזוויות הגדולות, כמו ∠AOC.',why:`${n} קרניים ← ${n*(n-1)/2} זוויות.`}},
+ANG[5],
+()=>{const x=pick([r(10,85),90,r(95,170),180]),k=x<90?'חדה':x===90?'ישרה':x<180?'קהה':'שטוחה';return{type:'choice',t:`זווית שגודלה ${L(x+'°')} היא זווית:`,opts:TY,ans:k,hint:'חדה: קטנה מ-90° · ישרה: 90° · קהה: בין 90° ל-180° · שטוחה: 180°',why:`${x}° ← זווית ${k}.`}},
+()=>{const tp=d=>d<90?0:d===90?1:2,ds=shuf([r(25,70),90,r(110,160)]),kd=r(0,2),ix=ds.findIndex(d=>tp(d)===kd);return{type:'choice',t:`איזו זווית היא זווית ${TY[kd]}?`,svg:asvg(ds.map((d,i)=>{const o=[48+i*82,125];return ray(o,0,38)+ray(o,d,38)+arcp(o,13,0,d)+`<text x="${o[0]}" y="168" font-size="15" text-anchor="middle">${i+1}</text>`}).join('')),opts:['זווית 1','זווית 2','זווית 3'],ans:`זווית ${ix+1}`,hint:'ישרה נראית כמו פינה של ריבוע, חדה "סגורה" יותר ממנה, וקהה "פתוחה" יותר.',why:`זווית ${ix+1} היא זווית ${TY[kd]}.`}},
+ANG[6],ANG[7]];
+const A21a=[
+()=>{const V=pick(['A','B','C']);return{type:'choice',t:'איך כותבים, באמצעות אות הקודקוד, את הזווית המסומנת בקשת האדומה?',svg:triFig(V),opts:['∠A','∠B','∠C'].map(L),ans:L('∠'+V),hint:'כותבים ∠ ואחריו אות הקודקוד של הזווית.',why:`הקשת נמצאת בקודקוד ${V} ← ${L('∠'+V)}.`}},
+()=>{const ds=[0,45,90],s='<text x="82" y="172" font-size="15">O</text>'+ds.map((d,i)=>ray(OA,d,130)+tx(OA,d,145,'ABC'[i])).join('');return{type:'choice',t:`בציור יוצאות מהנקודה O שלוש קרניים. למה אי אפשר לסמן זווית כאן רק בשם ${L('∠O')}?`,svg:asvg(s),opts:shuf(['כי יש כמה זוויות עם אותו קודקוד O','כי O אינה קודקוד של אף זווית','כי חייבים לכתוב ארבע אותיות']),ans:'כי יש כמה זוויות עם אותו קודקוד O',hint:'אות הקודקוד לבדה מספיקה רק כשיש זווית אחת בקודקוד.',why:'כשיוצאות כמה קרניים מאותו קודקוד, יש כמה זוויות, ולכן כותבים שלוש אותיות.'}}];
+const A21b=[ANG[9],ANG[10],
+()=>{const l=pick(LS);return{type:'choice',t:`הזווית ${nm3(l)} נכתבת גם:`,opts:shuf([`∠${l[2]}${l[1]}${l[0]}`,`∠${l[1]}${l[0]}${l[2]}`,`∠${l[0]}${l[2]}${l[1]}`]).map(L),ans:L(`∠${l[2]}${l[1]}${l[0]}`),hint:'הקודקוד תמיד באמצע. מותר להחליף בין שתי האותיות האחרות.',why:`הקודקוד ${l[1]} נשאר באמצע: ${L(`∠${l[2]}${l[1]}${l[0]}`)}.`}},
+()=>{const a=r(30,55),b=r(30,60),t=a+b,k=r(0,2),n=['AOB','BOC','AOC'][k];return{type:'num',unit:'°',t:`לפי הציור, מהו גודל הזווית ${L('∠'+n)}?`,svg:addFig(a,t,a+'°',b+'°',t+'°'),ans:[a,b,t][k],hint:'∠AOB בין OA ל-OB · ∠BOC בין OB ל-OC · ∠AOC בין OA ל-OC.',why:`${L('∠'+n)} = ${[a,b,t][k]}°`}}];
+const GR=[['α','אלפא'],['β','בטא'],['γ','גמא'],['δ','דלתא']];
+const A21c=[
+()=>{const g=pick(GR);return{type:'choice',t:`איך נקראת האות היוונית ${L(g[0])}, שמשמשת לסימון זוויות?`,opts:shuf(GR.map(x=>x[1])),ans:g[1],hint:'האותיות: α אלפא · β בטא · γ גמא · δ דלתא.',why:`${g[0]} נקראת ${g[1]}.`}},
+()=>{const a=r(30,55),b=r(30,60),k=r(0,1);return{type:'choice',t:`איך כותבים את הזווית ${k?'β':'α'} בעזרת שלוש אותיות?`,svg:addFig(a,a+b,'α','β',''),opts:['∠AOB','∠BOC','∠AOC'].map(L),ans:L(k?'∠BOC':'∠AOB'),hint:'מזהים בין אילו שתי קרניים נמצאת הזווית.',why:`${k?'β':'α'} נמצאת בין ${k?'OB ל-OC':'OA ל-OB'}, ולכן היא ${L(k?'∠BOC':'∠AOB')}.`}},
+()=>{const a=r(30,55),b=r(30,60);return{type:'num',unit:'°',t:`בציור ${L(`α = ${a}°`)} ו-${L(`β = ${b}°`)}. מצאו את גודל ${L('∠AOC')}.`,svg:addFig(a,a+b,'α','β','?'),ans:a+b,hint:'∠AOC מורכבת משתי הזוויות α ו-β.',why:L(`${a} + ${b} = ${a+b}`)+'°'}},
+()=>{const a=r(30,55),b=r(30,60);return{type:'num',unit:'°',t:`בציור ${L(`∠AOC = ${a+b}°`)} ו-${L(`α = ${a}°`)}. מצאו את גודל β.`,svg:addFig(a,a+b,'α','?',a+b+'°'),ans:b,hint:'β = ∠AOC − α.',why:L(`${a+b} − ${a} = ${b}`)+'°'}}];
+const A22=[
+()=>{let d1=r(30,150),d2=r(30,150);if(r(0,4)===0)d2=d1;else while(Math.abs(d1-d2)<15)d2=r(30,150);const ln=shuf([55,28]),o1=[70,150],o2=[190,150];return{type:'choice',t:'איזו זווית גדולה יותר? (אורך הצלעות בציור אינו משפיע על גודל הזווית)',svg:asvg(ray(o1,0,ln[0])+ray(o1,d1,ln[0])+arcp(o1,18,0,d1)+ray(o2,0,ln[1])+ray(o2,d2,ln[1])+arcp(o2,12,0,d2)+'<text x="70" y="174" font-size="15" text-anchor="middle">1</text><text x="190" y="174" font-size="15" text-anchor="middle">2</text>'),opts:['זווית 1','זווית 2','שוות'],ans:d1===d2?'שוות':d1>d2?'זווית 1':'זווית 2',hint:'משווים את "הפתיחה" בין הצלעות, לא את אורך הצלעות.',why:d1===d2?'הזוויות שוות בגודלן.':`זווית ${d1>d2?1:2} פתוחה יותר, ולכן גדולה יותר.`}},
+()=>{const a=r(20,170);let b=r(20,170);if(r(0,5)===0)b=a;const s=a>b?'>':a<b?'<':'=';return{type:'choice',t:`נתון ${L(`∠A = ${a}°`)} ו-${L(`∠B = ${b}°`)}. איזו כתיבה נכונה?`,opts:['∠A &gt; ∠B','∠A &lt; ∠B','∠A = ∠B'].map(L),ans:L(s==='>'?'∠A &gt; ∠B':s==='<'?'∠A &lt; ∠B':'∠A = ∠B'),hint:'משווים את גודל הזוויות במעלות.',why:`${a}° ${s==='>'?'גדול מ':s==='<'?'קטן מ':'שווה ל'}-${b}°.`}},
+()=>{let v;do v=[r(20,170),r(20,170),r(20,170)];while(new Set(v).size<3);const n=['A','B','C'],ord=[0,1,2].sort((x,y)=>v[x]-v[y]),cor=ord.map(i=>n[i]).join(', ');const o=new Set([cor]);while(o.size<3)o.add(shuf(n).join(', '));return{type:'choice',t:`סדרו מהזווית הקטנה לגדולה: ${L(n.map((x,i)=>`∠${x}=${v[i]}°`).join(', '))}`,opts:shuf([...o]).map(L),ans:L(cor),hint:'מסתכלים על מספר המעלות של כל זווית.',why:`הסדר מהקטנה לגדולה: ${L(cor)}.`}},
+()=>{const i=r(0,3);let j;do j=r(0,3);while(j===i);return{type:'choice',t:`${L('∠P')} היא זווית ${TY[i]} ו-${L('∠Q')} היא זווית ${TY[j]}. איזו זווית גדולה יותר?`,opts:[L('∠P'),L('∠Q')],ans:L(i>j?'∠P':'∠Q'),hint:'מהקטנה לגדולה: חדה, ישרה, קהה, שטוחה.',why:`זווית ${TY[Math.max(i,j)]} גדולה מזווית ${TY[Math.min(i,j)]}.`}},
+()=>{const a=r(30,55),b=r(30,60),t=a+b;return{type:'num',unit:'°',t:`${L('∠AOC')} גדולה מ-${L('∠AOB')} בכמה מעלות?`,svg:addFig(a,t,a+'°','',t+'°'),ans:b,hint:'כדי לדעת בכמה זווית אחת גדולה מהשנייה, מחסרים.',why:L(`${t} − ${a} = ${b}`)+'°'}},
+ANG[8],ANG[3]];
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+const sp=([n,d])=>{const g=gcd(n,d)||1;return[n/g,d/g]};
+const fa=(a,b)=>sp([a[0]*b[1]+b[0]*a[1],a[1]*b[1]]),fs=(a,b)=>sp([a[0]*b[1]-b[0]*a[1],a[1]*b[1]]),fm=(a,b)=>sp([a[0]*b[0],a[1]*b[1]]),fd=(a,b)=>sp([a[0]*b[1],a[1]*b[0]]);
+const FRh=(n,d)=>`<span class="fr"><span>${n}</span><span>${d}</span></span>`;
+const FR=(n,d)=>d===1?`${n}`:FRh(n,d);
+const FS=a=>FR(a[0],a[1]);
+const FN='<div style="font-size:14px;color:var(--mut)">אפשר לכתוב שבר בצורה 3/4, או מספר שלם.</div>';
+const nf=(e,res,hint)=>({neg:1,type:'num',t:`חשבו: ${L(e)}${FN}`,ans:res[0]/res[1],hint,why:`${L(e)} = ${FS(res)}`});
+const NF=[
+()=>{const b=r(2,5),k=r(2,3),a=r(1,b-1),c=r(1,b*k-1);return nf(`${FRh(a,b)} + ${FRh(c,b*k)}`,fa([a,b],[c,b*k]),'מביאים למכנה משותף, ואז מחברים את המונים.')},
+()=>{const a=r(1,3),b=r(a+1,6),c=r(1,3),d=r(c+1,6);return nf(`${FRh(a,b)} · ${FRh(c,d)} + ${FRh(1,2)}`,fa(fm([a,b],[c,d]),[1,2]),'קודם כפל (מונה כפול מונה, מכנה כפול מכנה), ואז חיבור.')},
+()=>{const b=r(3,8),a=r(1,b-2),c=r(1,b-a-1),d=r(2,6);return nf(`(${FRh(a,b)} + ${FRh(c,b)}) · ${d}`,fm(fa([a,b],[c,b]),[d,1]),'קודם הסוגריים, ואז כפל.')},
+()=>{const b=r(2,5),a=r(1,b),d=r(2,5),c=r(1,d),e=r(1,4);return nf(`${FRh(a,b)} ÷ ${FRh(c,d)} + ${e}`,fa(fd([a,b],[c,d]),[e,1]),'חילוק בשבר = כפל בהופכי. קודם חילוק, ואז חיבור.')},
+()=>{const c=r(2,5),b=r(1,c-1),d=r(2,6),a=Math.ceil(b*d/c)+r(1,3);return nf(`${a} − ${FRh(b,c)} · ${d}`,fs([a,1],fm([b,c],[d,1])),'קודם כפל, ואז חיסור.')},
+()=>{const b=r(3,9),a=r(3,b),c=r(1,a-1),d=r(2,5);return nf(`(${FRh(a,b)} − ${FRh(c,b)}) ÷ ${d}`,fd(fs([a,b],[c,b]),[d,1]),'סוגריים קודם. חילוק במספר = כפל בהופכי שלו.')}
+];
+const gX=v=>132+v*24,gY=v=>132-v*24;
+const sgm=(a,b)=>`<line class="ln" x1="${gX(a[0])}" y1="${gY(a[1])}" x2="${gX(b[0])}" y2="${gY(b[1])}"/>`;
+const poly=ps=>`<polygon class="sh" points="${ps.map(p=>gX(p[0])+','+gY(p[1])).join(' ')}"/>`;
+const rc=()=>{const x1=r(-5,3),y1=r(-5,3);return[x1,y1,x1+r(2,5-x1),y1+r(2,5-y1)]};
+const QN=['רביע I','רביע II','רביע III','רביע IV'],QS=[[1,1],[-1,1],[-1,-1],[1,-1]],QP=['ימין למעלה','שמאל למעלה','שמאל למטה','ימין למטה'];
+const K=[
+()=>{const k=r(0,1);return{type:'choice',t:`איזה ציר הוא ${k?'האנכי (העומד)':'האופקי (השוכב)'}?`,opts:['ציר x','ציר y'],ans:k?'ציר y':'ציר x',hint:'ציר x אופקי (שוכב), ציר y אנכי (עומד).',why:k?'ציר y הוא הציר האנכי.':'ציר x הוא הציר האופקי.'}},
+()=>({type:'xy',t:'מהם שיעורי ראשית הצירים O?',pts:[[0,0,'O']],ans:[0,0],hint:'הראשית היא נקודת החיתוך של שני הצירים.',why:`ראשית הצירים היא ${P(0,0)}.`}),
+()=>{const k=r(0,1);return{type:'choice',t:`בכיוון איזה צד גדלים ערכי ${k?'y':'x'}?`,opts:['ימינה','שמאלה','למעלה','למטה'],ans:k?'למעלה':'ימינה',hint:'על ציר x המספרים גדלים ימינה, ועל ציר y הם גדלים למעלה.',why:k?'ערכי y גדלים למעלה.':'ערכי x גדלים ימינה.'}},
+()=>{const q=r(0,3);return{type:'choice',t:`איפה נמצא ${QN[q]}?`,pts:[],opts:QP,ans:QP[q],hint:'הרביעים ממוספרים נגד כיוון השעון, החל מהרביע הימני העליון.',why:`${QN[q]} נמצא ${QP[q]}.`}},
+()=>{const q=r(0,3),[sx,sy]=QS[q];return{type:'choice',t:`באיזה רביע נמצאות הנקודות ששיעור ה-x שלהן ${sx>0?'חיובי':'שלילי'} ושיעור ה-y שלהן ${sy>0?'חיובי':'שלילי'}?`,opts:QN,ans:QN[q],hint:'רביע I: (+,+) · II: (−,+) · III: (−,−) · IV: (+,−)',why:`${QN[q]}.`}},
+()=>{const k=r(0,1),o=['שיעור ה-x שלהן הוא 0','שיעור ה-y שלהן הוא 0','שני השיעורים שלהן שווים'];return{type:'choice',t:`מה משותף לכל הנקודות שעל ציר ${k?'y':'x'}?`,opts:o,ans:k?o[0]:o[1],hint:'נקודה שעל ציר x לא עולה ולא יורדת, ולכן y = 0. נקודה שעל ציר y לא זזה ימינה או שמאלה, ולכן x = 0.',why:k?'על ציר y: x = 0.':'על ציר x: y = 0.'}},
+()=>{const q=r(0,3),ps=[0,1,2,3].map(i=>[QS[i][0]*r(1,5),QS[i][1]*r(1,5)]);return{type:'choice',t:`איזו נקודה נמצאת ב${QN[q]}?`,opts:shuf(ps.map(p=>P(p[0],p[1]))),ans:P(ps[q][0],ps[q][1]),hint:'בודקים את הסימנים של x ושל y.',why:`${P(ps[q][0],ps[q][1])} נמצאת ב${QN[q]}.`}}
+];
+const A1=[K[0],K[1],K[2],COORD[2],K[4],K[3],COORD[3],K[5],K[6]];
+const M=[
+()=>{const ps=[];while(ps.length<3){const p=[r(-5,5),r(-5,5)];if((p[0]||p[1])&&!ps.some(q=>q[0]===p[0]&&q[1]===p[1]))ps.push(p)}const k=r(0,2);return{type:'xy',t:`מהם שיעורי הנקודה ${'ABC'[k]}?`,pts:ps.map((p,i)=>[p[0],p[1],'ABC'[i]]),ans:ps[k],hint:'קודם קוראים את x (ימינה/שמאלה), ואחר כך את y (למעלה/למטה).',why:`הנקודה ${'ABC'[k]} היא ${P(ps[k][0],ps[k][1])}.`}},
+()=>{const ps=[];while(ps.length<3){const p=[r(-5,5),r(-5,5)];if((p[0]||p[1])&&!ps.some(q=>q[0]===p[0]&&q[1]===p[1]))ps.push(p)}const k=r(0,2);return{type:'choice',t:`איזו נקודה בציור היא ${P(ps[k][0],ps[k][1])}?`,pts:ps.map((p,i)=>[p[0],p[1],'ABC'[i]]),opts:['A','B','C'],ans:'ABC'[k],hint:'מתחילים בראשית: זזים לפי x, ואז לפי y.',why:`${P(ps[k][0],ps[k][1])} היא הנקודה ${'ABC'[k]}.`}},
+()=>{const x=nz(-5,5);return{type:'xy',t:'מהם שיעורי הנקודה A?',pts:[[x,0,'A']],ans:[x,0],hint:'הנקודה נמצאת על ציר x, ולכן שיעור ה-y שלה הוא 0.',why:`הנקודה A היא ${P(x,0)} – נקודה על ציר x.`}},
+()=>{const x=nz(-5,5);return{type:'click',t:`לחצו על הרשת כדי לסמן את הנקודה ${P(x,0)} (היא נמצאת על ציר x)`,pts:[],ans:[x,0],hint:`זזים ${Math.abs(x)} צעדים ${x>0?'ימינה':'שמאלה'} מהראשית, בלי לעלות או לרדת.`,why:`${P(x,0)} נמצאת על ציר x, ${Math.abs(x)} צעדים ${x>0?'מימין':'משמאל'} לראשית.`}},
+()=>{const a=nz(-5,5);let b;do b=nz(-5,5);while(b===a);return{type:'xy',t:`לנקודה A שיעורים ${P(a,b)}. מחליפים בין שיעור ה-x לשיעור ה-y ומקבלים את הנקודה B. מהם שיעורי B?`,pts:[[a,b,'A']],ans:[b,a],hint:'הסדר חשוב: שיעור ה-x תמיד ראשון.',why:`B היא ${P(b,a)}.`}},
+()=>{const [x1,y1,x2,y2]=rc();return{type:'xy',t:'הנקודות A, B, C הן שלושה קודקודים של מלבן ABCD שצלעותיו מקבילות לצירים. מהם שיעורי הקודקוד D?',pts:[[x1,y1,'A'],[x2,y1,'B'],[x2,y2,'C']],ex:sgm([x1,y1],[x2,y1])+sgm([x2,y1],[x2,y2]),ans:[x1,y2],hint:'ל-D אותו שיעור x כמו ל-A, ואותו שיעור y כמו ל-C.',why:`D היא ${P(x1,y2)}.`}}
+];
+const MV=()=>{const sx=r(-3,3),sy=r(-3,3);let dx,dy;do dx=nz(-3,3);while(Math.abs(sx+dx)>5);do dy=nz(-3,3);while(Math.abs(sy+dy)>5);return{type:'xy',t:`מתחילים בנקודה A ${P(sx,sy)} ומזיזים ${Math.abs(dx)} צעדים ${dx>0?'ימינה':'שמאלה'} ו-${Math.abs(dy)} צעדים ${dy>0?'למעלה':'למטה'}. באיזו נקודה נגיע?`,pts:[[sx,sy,'A']],ans:[sx+dx,sy+dy],hint:'ימינה/שמאלה משנה את x. למעלה/למטה משנה את y.',why:`${P(sx,sy)} ← ${P(sx+dx,sy+dy)}`}};
+const A2=[COORD[0],M[0],M[1],COORD[1],M[2],M[3],COORD[5],COORD[6],COORD[7],M[4],MV,M[5]];
+const segQ=(A,B,hint)=>{const len=Math.abs(A[0]-B[0])+Math.abs(A[1]-B[1]);return{type:'num',unit:'יחידות',t:`נתונות הנקודות A ${P(A[0],A[1])} ו-B ${P(B[0],B[1])}. מהו אורך הקטע AB?`,pts:[[A[0],A[1],'A'],[B[0],B[1],'B']],ex:sgm(A,B),ans:len,hint,why:L(`|${f(A[0]===B[0]?A[1]:A[0])} − ${f(A[0]===B[0]?B[1]:B[0])}| = ${len}`)}};
+const sgn=()=>r(0,1)?1:-1;
+const rectT=(x1,y1,x2,y2)=>`A ${P(x1,y1)}, B ${P(x2,y1)}, C ${P(x2,y2)}, D ${P(x1,y2)}`;
+const rectQ=(x1,y1,x2,y2,kind,txt)=>{const w=x2-x1,h=y2-y1;return{type:'num',unit:kind?'יחידות ריבועיות':'יחידות',t:`${txt} ${rectT(x1,y1,x2,y2)}. מצאו את ${kind?'שטח':'היקף'} ה${txt.includes('ריבוע')?'ריבוע':'מלבן'}.`,pts:[[x1,y1,'A'],[x2,y1,'B'],[x2,y2,'C'],[x1,y2,'D']],ex:poly([[x1,y1],[x2,y1],[x2,y2],[x1,y2]]),ans:kind?w*h:2*(w+h),hint:kind?'שטח = אורך · רוחב. מחשבים את האורך והרוחב לפי ההפרשים בין השיעורים.':'היקף = 2 · (אורך + רוחב). מחשבים את האורך והרוחב לפי ההפרשים בין השיעורים.',why:kind?L(`${w} · ${h} = ${w*h}`):L(`2 · (${w} + ${h}) = ${2*(w+h)}`)}};
+const S=[
+()=>{const y=r(-5,5),s=sgn(),a=r(1,5);let b;do b=r(1,5);while(b===a);return segQ([s*a,y],[s*b,y],'הקטע אופקי (שיעור ה-y זהה), ולכן אורכו הוא ההפרש בין שיעורי ה-x.')},
+()=>{const y=r(-5,5),a=r(1,5),b=r(1,5);return segQ([-a,y],[b,y],'הקצוות משני צדי ציר y: מחברים את המרחקים מהציר (או מחסרים את השיעורים).')},
+()=>{const x=r(-5,5),s=sgn(),a=r(1,5);let b;do b=r(1,5);while(b===a);return segQ([x,s*a],[x,s*b],'הקטע אנכי (שיעור ה-x זהה), ולכן אורכו הוא ההפרש בין שיעורי ה-y.')},
+()=>{const x=r(-5,5),a=r(1,5),b=r(1,5);return segQ([x,-a],[x,b],'הקצוות משני צדי ציר x: מחברים את המרחקים מהציר (או מחסרים את השיעורים).')},
+()=>{const k=r(0,2);let A,B;if(k===0){const y=r(-5,5),x1=r(-5,5);let x2;do x2=r(-5,5);while(x2===x1);A=[x1,y];B=[x2,y]}else if(k===1){const x=r(-5,5),y1=r(-5,5);let y2;do y2=r(-5,5);while(y2===y1);A=[x,y1];B=[x,y2]}else{do{A=[r(-5,5),r(-5,5)];B=[r(-5,5),r(-5,5)]}while(A[0]===B[0]||A[1]===B[1])}
+ const o=['ציר x','ציר y','לאף אחד מהצירים'];return{type:'choice',t:`הקטע AB מחבר את ${P(A[0],A[1])} ו-${P(B[0],B[1])}. לאיזה ציר הוא מקביל?`,pts:[[A[0],A[1],'A'],[B[0],B[1],'B']],ex:sgm(A,B),opts:o,ans:o[k],hint:'שיעור y זהה ← הקטע אופקי (מקביל לציר x). שיעור x זהה ← הקטע אנכי (מקביל לציר y).',why:`${['y זהה בשתי הנקודות ← מקביל לציר x.','x זהה בשתי הנקודות ← מקביל לציר y.','אין שיעור זהה ← לא מקביל לאף ציר.'][k]}`}},
+()=>{const [x1,y1,x2,y2]=rc();return rectQ(x1,y1,x2,y2,0,'קודקודי המלבן ABCD הם')},
+()=>{const [x1,y1,x2,y2]=rc();return rectQ(x1,y1,x2,y2,1,'קודקודי המלבן ABCD הם')},
+()=>{const s=r(2,4),x=r(-5,5-s),y=r(-5,5-s);return rectQ(x,y,x+s,y+s,r(0,1),'קודקודי הריבוע ABCD הם')},
+()=>{const [x1,y1,x2,y2]=rc(),w=x2-x1,h=y2-y1;return{neg:1,type:'num',unit:'יחידות ריבועיות',t:`קודקודי המשולש הישר-זווית ABC הם A ${P(x1,y1)}, B ${P(x2,y1)}, C ${P(x1,y2)}. מצאו את שטח המשולש.`,pts:[[x1,y1,'A'],[x2,y1,'B'],[x1,y2,'C']],ex:poly([[x1,y1],[x2,y1],[x1,y2]]),ans:w*h/2,hint:'הניצבים מקבילים לצירים. שטח = חצי מכפלת הניצבים. אפשר לכתוב שבר, למשל 7/2.',why:L(`${w} · ${h} ÷ 2 = ${w*h/2}`)}},
+()=>{const x=nz(-5,5),y=nz(-5,5),k=r(0,1);return{type:'num',unit:'יחידות',t:`מהו המרחק של הנקודה ${P(x,y)} מציר ${k?'ה-x':'ה-y'}?`,pts:[[x,y,'A']],ans:Math.abs(k?y:x),hint:k?'המרחק מציר x הוא שיעור ה-y, בלי הסימן (מרחק אינו שלילי).':'המרחק מציר y הוא שיעור ה-x, בלי הסימן (מרחק אינו שלילי).',why:k?`שיעור ה-y הוא ${f(y)}, ולכן המרחק מציר x הוא ${Math.abs(y)}.`:`שיעור ה-x הוא ${f(x)}, ולכן המרחק מציר y הוא ${Math.abs(x)}.`}},
+()=>{const [x1,y1,x2,y2]=rc(),w=x2-x1,h=y2-y1,k=r(0,1);return{type:'num',unit:k?'יחידות ריבועיות':'יחידות',t:`הנקודות A ${P(x1,y1)}, B ${P(x2,y1)}, C ${P(x2,y2)} הן שלושה קודקודים של מלבן ABCD שצלעותיו מקבילות לצירים. מצאו את ${k?'שטח':'היקף'} המלבן.`,pts:[[x1,y1,'A'],[x2,y1,'B'],[x2,y2,'C']],ex:sgm([x1,y1],[x2,y1])+sgm([x2,y1],[x2,y2]),ans:k?w*h:2*(w+h),hint:`AB = ${w} ו-BC = ${h} (לפי ההפרשים בין השיעורים). ${k?'שטח = אורך · רוחב.':'היקף = 2 · (אורך + רוחב).'}`,why:k?L(`${w} · ${h} = ${w*h}`):L(`2 · (${w} + ${h}) = ${2*(w+h)}`)}}
+];
+const A3=S;
+const SEC={
+alg:[['סדר פעולות החשבון',SO,[0,1,2,3,4,5]],['סדר פעולות עם שברים',NF,[0,1,2,3,4,5,1,3]]],
+coord:[['פרק 1 – היכרות עם מערכת הצירים',A1,[0,1,2,3,3,4,5,6,6,7,8,8]],['פרק 2 – קריאת שיעורי נקודה במערכת צירים וסימונה',A2,[0,1,2,3,3,4,5,6,7,8,9,10,11]],['פרק 3 – אורכי קטעים המקבילים לצירים, היקפים ושטחים',A3,[0,1,2,3,4,9,9,5,6,7,8,10,10]]],
+ang:[['פרק 20 – זיהוי זוויות וסוגי זוויות',A20,[0,1,2,3,3,4,4,5,5,6,7]],['פרק 21 – כתיבת זווית באמצעות אות הקודקוד',A21a,[0,0,0,1]],['פרק 21 – כתיבת זווית באמצעות שלוש אותיות',A21b,[0,0,1,1,2,2,3,3]],['פרק 21 – כתיבת זווית באמצעות אותיות יווניות',A21c,[0,0,1,1,2,3]],['פרק 22 – השוואה בין גדלים של זוויות',A22,[0,0,1,1,2,3,4,5,5,6]]]};
+const TABS=[['alg','אלגברה'],['coord','מערכת צירים'],['ang','זוויות']];
+const TIPS={
+alg:'• סדר פעולות: סוגריים ← כפל וחילוק (משמאל לימין) ← חיבור וחיסור.<br>• שברים: בחיבור וחיסור מביאים למכנה משותף. בכפל – מונה כפול מונה ומכנה כפול מכנה. חילוק בשבר = כפל בהופכי.',
+coord:'• ציר x אופקי וציר y אנכי. הם נפגשים בראשית (0, 0). ערכי x גדלים ימינה, וערכי y גדלים למעלה.<br>• רביע I: (+,+) · II: (−,+) · III: (−,−) · IV: (+,−), ממוספרים נגד כיוון השעון.<br>• נקודה נכתבת (x, y): קודם ימינה/שמאלה, אחר כך למעלה/למטה. על ציר x: y = 0, ועל ציר y: x = 0.<br>• אורך קטע המקביל לציר: ההפרש בין השיעורים (כשהקצוות משני צדי הראשית – מחברים את המרחקים). היקף מלבן = 2·(אורך+רוחב), שטח = אורך·רוחב, שטח משולש ישר-זווית = חצי מכפלת הניצבים.',
+ang:'• זיהוי: לזווית יש קודקוד ושתי צלעות (קרניים). חדה &lt; 90° · ישרה = 90° · קהה בין 90° ל-180° · שטוחה = 180°.<br>• כתיבה: ∠A (אות הקודקוד – כשיש זווית אחת בקודקוד) · ∠ABC (שלוש אותיות – האות שבאמצע היא הקודקוד) · α, β, γ, δ (אותיות יווניות: אלפא, בטא, גמא, דלתא).<br>• השוואה: משווים את הפתיחה בין הצלעות (לא את אורכן). ∠AOC = ∠AOB + ∠BOC. זוויות קודקודיות שוות; צמודות – סכומן 180°.'};
+let topic='alg',EX=[],done=false;
+function tabs(){$('tabs').innerHTML='';TABS.forEach(([k,n])=>{const b=document.createElement('button');b.className='tab'+(k===topic?' on':'');b.textContent=n;b.onclick=()=>{topic=k;tabs();build()};$('tabs').appendChild(b)});$('tipb').innerHTML=TIPS[topic]}
+function ansHTML(q){
+ if(q.type==='num')return `<input data-i="${q.i}" autocomplete="off" ${q.neg?'':'inputmode="decimal"'}>${q.unit?`<b>${q.unit}</b>`:''}`;
+ if(q.type==='xy')return `<b>x =</b><input data-i="${q.i}" autocomplete="off" style="width:70px"><b>y =</b><input data-i="${q.i}" autocomplete="off" style="width:70px">`;
+ if(q.type==='choice')return `<div class="opts">${q.opts.map((t,o)=>`<button class="opt" data-i="${q.i}" data-o="${o}">${t}</button>`).join('')}</div>`;
+ return '<span style="color:var(--mut);font-size:14px">לחצו על הנקודה הנכונה ברשת</span>'}
+function exHTML(q){return `<div class="card ex" id="ex${q.i}"><div class="qh"><span class="nb">${q.n}</span><div class="qt">${q.t}</div></div><div class="sv" data-i="${q.i}">${q.svg||(q.pts?grid(q.pts,null,q.ex):'')}</div><div class="ans">${ansHTML(q)}</div><button class="btn sm ck" data-i="${q.i}">בדיקה</button> <button class="btn sec sm hb" data-i="${q.i}">💡 רמז</button><div class="fb hint" hidden></div><div class="fb res" hidden></div></div>`}
+function build(){EX=[];done=false;let h='<div id="score"></div>';
+ SEC[topic].forEach(([name,gen,idx],si)=>{h+=`<h2 data-s="${si}" data-name="${name}">${name}</h2>`;idx.forEach((gi,k)=>{const q=gen[gi]();q.n=k+1;q.i=EX.length;q.si=si;EX.push(q);h+=exHTML(q)})});
+ h+='<div class="row" style="margin:14px 0"><button class="btn" id="chk">בדיקת כל התרגילים</button><button class="btn sec" id="rst">תרגילים חדשים</button></div>';
+ $('main').innerHTML=h;$('chk').onclick=checkAll;$('rst').onclick=()=>{build();window.scrollTo({top:0,behavior:'smooth'})}}
+function checkOne(q,force){if(q.done)return;const root=$('ex'+q.i),ins=[...root.querySelectorAll('input')],rs=root.querySelector('.res');let v=null,good=false;
+ const num=s=>{s=s.trim().replace('−','-').replace(',','.');let m=s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/);if(m)return +m[3]?Number(m[1])+(m[1][0]==='-'?-1:1)*m[2]/m[3]:null;m=s.match(/^(-?\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);if(m)return +m[2]?m[1]/m[2]:null;return s!==''&&!isNaN(Number(s))?Number(s):null};
+ if(q.type==='num'){v=num(ins[0].value);good=v!==null&&Math.abs(v-q.ans)<1e-9}
+ else if(q.type==='xy'){const a=ins.map(i=>num(i.value));if(a.every(x=>x!==null)){v=a;good=a[0]===q.ans[0]&&a[1]===q.ans[1]}}
+ else if(q.type==='click'){v=q.cp||null;good=!!v&&v[0]===q.ans[0]&&v[1]===q.ans[1]}
+ else{v=q.sel||null;good=v===q.ans}
+ if(v===null&&!force){rs.hidden=false;rs.className='fb res hint';rs.innerHTML='כתבו או בחרו תשובה קודם 🙂';return}
+ q.done=true;q.good=good;
+ if(q.type==='click')root.querySelector('.sv').innerHTML=grid([[q.ans[0],q.ans[1],'✓']],good?null:v);
+ if(q.type==='choice')root.querySelectorAll('.opt').forEach(b=>{b.disabled=true;b.classList.remove('sel');const t=q.opts[b.dataset.o];if(t===q.ans)b.classList.add('good');else if(t===v)b.classList.add('wrong')});
+ ins.forEach(i=>i.disabled=true);
+ rs.hidden=false;rs.className='fb res '+(good?'ok':'no');rs.innerHTML=(good?'✅ ':v===null?'⬜ לא נענה. ':'❌ ')+q.why;
+ const cb=root.querySelector('.ck');if(cb)cb.hidden=true}
+function refresh(){let ok=0,n=0;const tot={},okc={};
+ EX.forEach(q=>{tot[q.si]=(tot[q.si]||0)+1;if(q.done){n++;if(q.good){ok++;okc[q.si]=(okc[q.si]||0)+1}}});
+ document.querySelectorAll('h2').forEach(h=>{const s=h.dataset.s;h.textContent=h.dataset.name+(n?` – ${okc[s]||0}/${tot[s]}`:'')});
+ if(!n){$('score').innerHTML='';return}
+ let m='';if(n===EX.length){const p=ok/n;m=p>=.9?'מצוין! מוכנים למבחן 🌟':p>=.7?'טוב מאוד! עוד קצת תרגול ותהיו מושלמים.':p>=.5?'התחלה טובה. חזרו על התזכורת וצפו בהסברים לטעויות.':'לא נורא – חזרו על התזכורת ונסו תרגילים חדשים.'}
+ $('score').innerHTML=`<div class="card"><div class="big">${ok}/${n}</div><p style="text-align:center;margin:0">${m||`נבדקו ${n} מתוך ${EX.length} תרגילים`}</p></div>`}
+function checkAll(){EX.forEach(q=>checkOne(q,true));refresh();$('chk').disabled=true;window.scrollTo({top:0,behavior:'smooth'})}
+$('main').addEventListener('click',e=>{
+ const hb=e.target.closest('.hb');if(hb){const h=hb.nextElementSibling;h.innerHTML='💡 '+EX[hb.dataset.i].hint;h.hidden=!h.hidden;return}
+ const kb=e.target.closest('.ck');if(kb){checkOne(EX[kb.dataset.i]);refresh();return}
+ const ob=e.target.closest('.opt');if(ob){const q=EX[ob.dataset.i];if(q.done)return;q.sel=q.opts[ob.dataset.o];ob.parentNode.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));ob.classList.add('sel');return}
+ const sv=e.target.closest('.sv');if(!sv)return;const q=EX[sv.dataset.i];if(q.type!=='click'||q.done)return;
+ const g=sv.querySelector('svg'),R=g.getBoundingClientRect(),k=264/R.width,cl=v=>Math.max(-5,Math.min(5,v));
+ q.cp=[cl(Math.round(((e.clientX-R.left)*k-132)/24)),cl(-Math.round(((e.clientY-R.top)*k-132)/24))];sv.innerHTML=grid([],q.cp)});
+$('main').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){checkOne(EX[e.target.dataset.i]);refresh()}});
+tabs();build();
+</script>
+</body>
+</html>
